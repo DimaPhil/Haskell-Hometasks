@@ -41,7 +41,29 @@ pairsBy f (Map ((x, y):other))
     tailanswer = pairsBy f (Map other)
 
 type BinHeap e = [BinTree e]
-data BinTree e = BinTree e [BinTree e]
+data BinTree e = BinTree e [BinTree e] deriving Show
+
+order :: BinTree e -> Int
+order (BinTree _ xs) = calcOrder $ length xs where
+  calcOrder 0 = 0
+  calcOrder 1 = 0
+  calcOrder l = calcOrder (l `div` 2) + 1
 
 merge :: Ord e => BinHeap e -> BinHeap e -> BinHeap e
-merge = undefined
+merge [] h2 = h2
+merge h1 [] = h1
+merge h1 h2
+  | order (head h1) <= order (head h2) = uniqueOrders (head h1 : merge (tail h1) h2)
+  | order (head h1) > order (head h2)  = uniqueOrders (head h2 : merge h1 (tail h2))
+
+uniqueOrders :: (Ord e) => BinHeap e -> BinHeap e
+uniqueOrders [] = []
+uniqueOrders [n] = [n]
+uniqueOrders (n1:n2:other)
+    | order n1 /= order n2 = n1:n2:other
+    | otherwise            = uniqueOrders (mergeEqual n1 n2 : other)
+
+mergeEqual :: (Ord e) => BinTree e -> BinTree e -> BinTree e
+mergeEqual tree1@(BinTree value1 children1) tree2@(BinTree value2 _)
+    | value1 >= value2 = BinTree value1 (children1 ++ [tree2])
+    | otherwise        = mergeEqual tree2 tree1

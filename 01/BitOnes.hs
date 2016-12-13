@@ -2,6 +2,7 @@
 
 module BitOnes where
 
+--bitOnes (x :: Integer) :: Int - количество единичных битов в двоичной записи числа x.
 bitOnes :: Integer -> Int
 bitOnes 0 = 0
 bitOnes x

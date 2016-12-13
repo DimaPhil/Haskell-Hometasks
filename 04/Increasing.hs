@@ -2,6 +2,8 @@
 
 module Increasing where
 
+--increasing elements находит наибольший по длине подотрезок массива, в котором элементы неубывают. Если таких отрезков несколько,
+--возвращает любой.
 increasing :: Ord a => [a] -> [a]
 increasing elements = take len $ drop start elements where
   find [] _ curans curindex maxans maxindex =

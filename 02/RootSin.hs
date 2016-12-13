@@ -2,14 +2,7 @@
 
 module RootSin where
 
-factorial :: Int -> Integer
-factorial 0 = 1
-factorial n = fromIntegral n * factorial (n - 1)
-
-ch :: Double -> Int -> Double
-ch _ 0 = 1
-ch x n = ch x (n - 1) + x ^ (2 * n) / fromIntegral (factorial (2 * n))
-
+--rootSin x находит корень уравнения x + sin(x) = 2 методом дихотомии (так как это возврастающая функция).
 rootSin :: Double -> Double
 rootSin = search 0 5 where
   search l r acc

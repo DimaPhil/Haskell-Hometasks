@@ -32,7 +32,7 @@ wave start finish graph
         --helper - вспомогательная функция для обхода графа в ширину
         --принимает конечную вершину, граф, текущие расстояния (мап), текущих предков (мап), текущую очередь
         helper :: Int -> Graph -> M.Map Int Int -> M.Map Int Int -> S.Seq Int -> (Int, M.Map Int Int)
-        helper fs (n, edgeExists) distances parents q
+        helper fs g@(n, edgeExists) distances parents q
             --если очередь пустая, то bfs завершен, возвращаем пару из посчитанных расстояний и массива предков)
             --иначе, обновляем расстояния и предков для соседей первой вершины из очереди, запускаемся рекурсивно
             | S.null q  = (fromJust (M.lookup fs distances), parents)
@@ -76,13 +76,13 @@ wave start finish graph
 
         --bfs s f graph обходит граф в ширину, используя вспомогательную функцию helper
         bfs :: Int -> Int -> Graph -> (Int, M.Map Int Int)
-        bfs s f (n, _) = helper f g (initialDistances n s) M.empty (S.fromList [s])
+        bfs s f g@(n, _) = helper f g (initialDistances n s) M.empty (S.fromList [s])
 
 isEdge :: Int -> Int -> Bool
 isEdge i j = (i `elem` [0..2] && j `elem` [0..2]) || (i `elem` [3..5] && j `elem` [3..5]) || (i == 2 && j == 3)
 
-g :: Graph
-g = (6, isEdge)
+testGraph :: Graph
+testGraph = (6, isEdge)
 
 path :: Maybe [Int]
-path = wave 1 5 g
+path = wave 1 5 testGraph
